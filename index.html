@@ -413,6 +413,52 @@
       min-width: 580px;
       max-width: 90vw;
     }
+    .cashier-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      border: 2px solid #2b2d42;
+      color: #ef4444;
+      font-size: 18px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #2b2d42;
+      z-index: 20;
+      transition: transform 0.1s, background-color 0.15s;
+    }
+    .cashier-close-btn:hover {
+      background: #fee2e2;
+    }
+    .cashier-close-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Полная изоляция кассы от джойстика и игрового мира */
+    body.cashier-mode-open #joystick-touch-area,
+    body.cashier-mode-open #joystick-base,
+    body.cashier-mode-open #mobile-action-cluster,
+    body.cashier-mode-open #mission-hint,
+    body.cashier-mode-open .speech-bubble,
+    body.cashier-mode-open #action-prompt,
+    body.cashier-mode-open #rush-hour-banner {
+      display: none !important;
+      pointer-events: none !important;
+    }
+    body.cashier-mode-open #cashier-panel {
+      z-index: 2500 !important;
+    }
+
+    .rush-banner-mobile,
+    .fuel-hint-mobile {
+      display: none;
+    }
     .cashier-speech {
       background: #e0f2fe;
       border: 2px dashed #0284c7;
@@ -1952,30 +1998,32 @@
       /* Компактный Fuel Gauge Box на мобильных */
       #fuel-gauge-box {
         position: fixed !important;
-        top: 38px !important;
+        top: 48px !important;
         bottom: auto !important;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
-        width: min(300px, 80vw) !important;
-        padding: 6px 12px !important;
-        border-radius: 14px !important;
+        width: min(260px, 75vw) !important;
+        padding: 5px 10px !important;
+        border-radius: 12px !important;
         border-width: 2px !important;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
-        gap: 4px !important;
+        gap: 2px !important;
         z-index: 1500 !important;
         backdrop-filter: blur(8px) !important;
         background: rgba(255, 255, 255, 0.95) !important;
       }
       #fuel-gauge-box .gauge-title {
-        font-size: 11px !important;
+        font-size: 10.5px !important;
+        margin-top: 1px !important;
       }
       #fuel-gauge-box .gauge-bar-bg {
-        height: 12px !important;
-        border-radius: 6px !important;
+        height: 8px !important;
+        border-radius: 4px !important;
       }
       #fuel-gauge-box .fuel-hint-text {
-        font-size: 9.5px !important;
+        font-size: 9px !important;
+        margin-top: 2px !important;
       }
 
       /* Адаптация модалок для телефонов в ландшафтном режиме */
@@ -2045,9 +2093,9 @@
         display: none !important;
       }
 
-      /* Подсказка миссии: прижата к нижнему краю по центру, не перекрывает джойстик */
+      /* Подсказка миссии: прижата к нижнему краю со смещением влево для свободного пространства кнопок */
       #mission-hint {
-        left: 50% !important;
+        left: 38% !important;
         transform: translateX(-50%) !important;
         bottom: 8px !important;
         font-size: 11px !important;
@@ -2057,7 +2105,7 @@
         box-shadow: 0 2px 0 #2b2d42 !important;
         background: rgba(255, 255, 255, 0.88) !important;
         backdrop-filter: blur(4px) !important;
-        max-width: 44vw !important;
+        max-width: 32vw !important;
         text-align: center !important;
         white-space: nowrap !important;
         overflow: hidden !important;
@@ -2096,35 +2144,98 @@
         border-radius: 6px !important;
       }
 
+      .desktop-key-hint {
+        display: none !important;
+      }
+      .fuel-hint-desktop, .rush-banner-desktop {
+        display: none !important;
+      }
+      .fuel-hint-mobile, .rush-banner-mobile {
+        display: inline-block !important;
+      }
+
+      /* Компактный бейдж Час пик в левом верхнем углу под датой */
+      #rush-hour-banner {
+        top: 42px !important;
+        left: 14px !important;
+        transform: none !important;
+        padding: 3px 10px !important;
+        border-radius: 10px !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        border: 2px solid #ffffff !important;
+        box-shadow: 0 2px 10px rgba(247, 37, 133, 0.45) !important;
+        white-space: nowrap !important;
+        max-width: 170px !important;
+        z-index: 40 !important;
+      }
+
+      /* Мобильные тосты оповещений */
+      #alert-toast {
+        top: 40px !important;
+        padding: 4px 12px !important;
+        font-size: 12px !important;
+        border-radius: 10px !important;
+        border-width: 2px !important;
+        max-width: 75vw !important;
+        box-shadow: 0 3px 0 #2b2d42 !important;
+        z-index: 1200 !important;
+      }
+
       /* Касса в мобильном режиме */
       #cashier-panel {
-        padding: 12px 16px !important;
-        gap: 8px !important;
+        bottom: 10px !important;
+        padding: 10px 14px !important;
+        gap: 6px !important;
         min-width: unset !important;
-        width: 94% !important;
-        max-width: 520px !important;
-        border-radius: 18px !important;
+        width: 95% !important;
+        max-width: 480px !important;
+        border-radius: 16px !important;
         border-width: 3px !important;
+        box-shadow: 0 6px 0 #2b2d42 !important;
+        z-index: 2500 !important;
+        touch-action: manipulation !important;
       }
       .cashier-speech {
-        padding: 6px 10px !important;
-        font-size: 12px !important;
+        padding: 4px 8px !important;
+        font-size: 11px !important;
+        margin-right: 36px !important;
+        line-height: 1.2 !important;
       }
       .cashier-screen {
-        padding: 6px 12px !important;
-        font-size: 13px !important;
+        padding: 5px 10px !important;
+        font-size: 12px !important;
+        gap: 4px 10px !important;
       }
       .bills-rack {
+        display: flex !important;
         gap: 6px !important;
+        width: 100% !important;
       }
       .bill-btn {
-        padding: 6px 10px !important;
-        font-size: 13px !important;
+        flex: 1 !important;
+        padding: 8px 2px !important;
+        font-size: 12px !important;
         border-radius: 8px !important;
+        text-align: center !important;
+        touch-action: manipulation !important;
       }
-      .btn-submit {
+      .cashier-actions {
+        display: flex !important;
+        gap: 8px !important;
+        width: 100% !important;
+      }
+      .cashier-actions .btn-clear {
+        flex: 1 !important;
         padding: 8px !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+      }
+      .cashier-actions .btn-submit {
+        flex: 2 !important;
+        padding: 8px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
       }
 
       /* Компактный режим главного меню для смартфонов в горизонтальной ориентации */
@@ -2314,7 +2425,8 @@
 
     <!-- Rush Hour Banner -->
     <div id="rush-hour-banner">
-      ⚡ ЧАС ПИК: ДВОЙНОЙ ТАРИФ (100 ₽/Л)! ОСТАЛОСЬ: <span id="rush-hour-timer">45</span>С
+      <span class="rush-banner-desktop">⚡ ЧАС ПИК: ДВОЙНОЙ ТАРИФ (100 ₽/Л)! ОСТАЛОСЬ: <span id="rush-hour-timer">45</span>С</span>
+      <span class="rush-banner-mobile">⚡ 2X ТАРИФ: <span id="rush-hour-timer-mobile">45</span>с</span>
     </div>
 
     <!-- Dynamic Speech Bubbles over Cars -->
@@ -2377,11 +2489,15 @@
       <div class="gauge-bar-bg" id="pressure-bg">
         <div id="pressure-fill"></div>
       </div>
-      <div class="fuel-hint-text" style="font-size: 11px; color: #64748b; text-align: center;">Удерживай [ПРОБЕЛ] / [⚡ ЗАПРАВКА]. Не передержи!</div>
+      <div class="fuel-hint-text" style="font-size: 11px; color: #64748b; text-align: center;">
+        <span class="fuel-hint-desktop">Удерживай [ПРОБЕЛ] / [⚡ ЗАПРАВКА]. Не передержи!</span>
+        <span class="fuel-hint-mobile">Удерживайте кнопку [⚡ ЗАПРАВКА]</span>
+      </div>
     </div>
 
     <!-- Cashier Overlay -->
     <div id="cashier-panel">
+      <button class="cashier-close-btn" onclick="toggleGameMode()" title="Выйти на улицу">✕</button>
       <div class="cashier-speech" id="cashier-dialogue">
         «Залил 35 литров 95-го, вот 2000 ₽ наличкой, гони сдачу!»
       </div>
@@ -2413,8 +2529,12 @@
       </div>
 
       <div class="cashier-actions">
-        <button class="btn-clear" onclick="resetChange()">СБРОС [C]</button>
-        <button class="btn-submit" onclick="submitChange()">ВЫДАТЬ СДАЧУ [ENTER]</button>
+        <button class="btn-clear" onclick="resetChange()">
+          <span>СБРОС</span><span class="desktop-key-hint"> [C]</span>
+        </button>
+        <button class="btn-submit" onclick="submitChange()">
+          <span>ВЫДАТЬ СДАЧУ</span><span class="desktop-key-hint"> [ENTER]</span>
+        </button>
       </div>
 
       <!-- Coffee / Hot Dog Upsell Box -->
@@ -2753,6 +2873,37 @@
 
   <!-- MAIN GAME LOGIC SCRIPT -->
   <script>
+  function isMobileClient() {
+    return window.innerWidth <= 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }
+
+  function formatTextForMobile(text) {
+    if (!text || typeof text !== 'string') return text;
+    if (!isMobileClient()) return text;
+    return text
+      .replace(/\[ПРОБЕЛ\]/gi, '[⚡ ЗАПРАВКА]')
+      .replace(/\[SPACE\]/gi, '[⚡ ЗАПРАВКА]')
+      .replace(/\[E\]/gi, '[⚡ ДЕЙСТВИЕ]')
+      .replace(/<span class="key-badge">E<\/span>/gi, '<b>[⚡ ДЕЙСТВИЕ]</b>')
+      .replace(/<span class="key-badge">ЛКМ<\/span>/gi, '<b>[🛢️ ВСТАВИТЬ]</b>')
+      .replace(/\[ЛКМ\]/gi, '[🛢️ ВСТАВИТЬ]')
+      .replace(/\[TAB\]/gi, '[🏪 КАССА]')
+      .replace(/<span class="key-badge">TAB<\/span>/gi, '<b>[🏪 КАССА]</b>')
+      .replace(/\[C\]/gi, '')
+      .replace(/\[ENTER\]/gi, '')
+      .replace(/\[Q\]/gi, '[✋ БРОСИТЬ]')
+      .replace(/\[R\]/gi, '[🔧 РЕМОНТ]')
+      .replace(/\[U\]/gi, '[🛒 МАГАЗИН]');
+  }
+
+  function setMissionHint(html) {
+    const el = document.getElementById('mission-hint');
+    if (el) el.innerHTML = formatTextForMobile(html);
+  }
+  window.isMobileClient = isMobileClient;
+  window.formatTextForMobile = formatTextForMobile;
+  window.setMissionHint = setMissionHint;
+
   /* =========================================================================
      1. АУДИО СИСТЕМА (Web Audio API — 100% процедурный синтез звуков)
      ========================================================================= */
@@ -4533,6 +4684,8 @@
       if (rBanner) rBanner.style.display = 'block';
       const rTimerEl = document.getElementById('rush-hour-timer');
       if (rTimerEl) rTimerEl.innerText = '45';
+      const rTimerMob = document.getElementById('rush-hour-timer-mobile');
+      if (rTimerMob) rTimerMob.innerText = '45';
       audio.playVictory();
       showAlert('⚡ НАЧАЛСЯ ЧАС ПИК! Двойной тариф (100 ₽/L) на 45 секунд!', 'success');
     } else if (name === 'COFFEE_UPSELL') {
@@ -6618,7 +6771,7 @@
             }
             document.getElementById('patience-container').style.display = 'flex';
             showAlert(`[${slotName}] ${this.archetypeName || this.typeNameRu} подъехал! Заказ: ${this.fuelNeeded}L`, 'info');
-            document.getElementById('mission-hint').innerHTML = `👉 <b>${slotName}:</b> Возьмите пистолет <span class="key-badge">E</span> и вставьте в бак <span class="key-badge">ЛКМ</span>.`;
+            setMissionHint(`👉 <b>${slotName}:</b> Возьмите пистолет <span class="key-badge">E</span> и вставьте в бак <span class="key-badge">ЛКМ</span>.`);
           } else {
             this.isBraking = true;
             this.currentSpeed = THREE.MathUtils.lerp(this.currentSpeed, 0, dt * 7.0);
@@ -6973,6 +7126,7 @@
       if (!this.touchArea || !this.base || !this.thumb) return;
 
       const onStart = (e) => {
+        if (document.body.classList.contains('cashier-mode-open') || document.body.classList.contains('menu-open') || document.body.classList.contains('quick-menu-open')) return;
         if (this.activeTouchId !== null) return;
         const touch = e.changedTouches[0];
         this.activeTouchId = touch.identifier;
@@ -7352,6 +7506,8 @@
       }
 
       GameState.mode = 'CASHIER';
+      document.body.classList.add('cashier-mode-open');
+      if (touchController) touchController.reset();
       document.getElementById('mode-icon').innerText = '⛽';
       document.getElementById('mode-text').innerText = 'НА УЛИЦУ [TAB]';
       document.getElementById('cashier-panel').style.display = 'flex';
@@ -7390,7 +7546,7 @@
 
         document.getElementById('cashier-dialogue').innerText = diagText;
         updateCashierDisplay();
-        document.getElementById('mission-hint').innerHTML = `👉 <b>Касса:</b> Наберите купюрами ровно сдачу (${requiredChange} ₽) и нажмите [ВЫДАТЬ СДАЧУ].`;
+        setMissionHint(`👉 <b>Касса:</b> Наберите купюрами ровно сдачу (${requiredChange} ₽) и нажмите [ВЫДАТЬ СДАЧУ].`);
       } else {
         document.getElementById('cashier-dialogue').innerText = `«Пока никого на кассе нет. Заправьте машину снаружи!»`;
         GameState.cashierDue = 0;
@@ -7404,13 +7560,15 @@
 
     } else {
       GameState.mode = 'PUMPER';
+      document.body.classList.remove('cashier-mode-open');
       document.getElementById('mode-icon').innerText = '🏪';
       document.getElementById('mode-text').innerText = 'В КАССУ [TAB]';
       document.getElementById('cashier-panel').style.display = 'none';
       if (GameState.nozzleState === 'IN_TANK' || GameState.nozzleState2 === 'IN_TANK' || GameState.nozzleState3 === 'IN_TANK') {
         document.getElementById('fuel-gauge-box').style.display = 'flex';
       }
-      document.getElementById('mission-hint').innerHTML = `👉 <b>Заправка:</b> Заправьте машины на постах и следите за наполнением!`;
+      setMissionHint(`👉 <b>Заправка:</b> Заправьте машины на постах и следите за наполнением!`);
+      updateSmartActionButton();
     }
   }
 
@@ -7672,7 +7830,7 @@
     }
     updateHUD();
     updateRepairUI();
-    document.getElementById('mission-hint').innerHTML = `👉 <b>Задание:</b> Шланг восстановлен! Заправляйте подъехавшие машины.`;
+    setMissionHint(`👉 <b>Задание:</b> Шланг восстановлен! Заправляйте подъехавшие машины.`);
   }
 
   function updateRepairUI() {
@@ -8221,12 +8379,13 @@
         car.state = 'BLOCKED_BY_HOSE';
         car.blockedTimer = 0;
         car.hornTimer = 0;
+        const ejectHint = isMobileClient() ? 'Вытащите пистолет из бака' : 'Вытащи на [E]';
         document.getElementById('cashier-dialogue').innerText =
-          `[СЛОТ ${slotNum}: ${car.archetypeName}] «Эй, шеф! Спасибо за сдачу, но ты пистолет забыл в моем баке! Вытащи на [E], я уехать не могу!»`;
-        showAlert(`ВНИМАНИЕ: Пистолет #${slotNum} остался в баке! Вытащите его [E]`, 'danger');
+          `[СЛОТ ${slotNum}: ${car.archetypeName}] «Эй, шеф! Спасибо за сдачу, но ты пистолет забыл в моем баке! ${ejectHint}, я уехать не могу!»`;
+        showAlert(`ВНИМАНИЕ: Пистолет #${slotNum} остался в баке! Вытащите его!`, 'danger');
         audio.playCarHorn();
-        document.getElementById('mission-hint').innerHTML =
-          `👉 <b>Внимание:</b> Водитель заблокирован! Выйдите на улицу <span class="key-badge">TAB</span> и вытащите пистолет <span class="key-badge">E</span>.`;
+        setMissionHint(
+          `👉 <b>Внимание:</b> Водитель заблокирован! Выйдите на улицу и вытащите пистолет.`);
       } else {
         document.getElementById('cashier-dialogue').innerText =
           `[СЛОТ ${slotNum}: ${car.archetypeName}] «${departureSpeech} Всё до копейки правильно!»`;
@@ -8285,7 +8444,8 @@
   let alertTimer = null;
   function showAlert(text, type = 'info') {
     const el = document.getElementById('alert-toast');
-    el.innerText = text;
+    if (!el) return;
+    el.innerText = isMobileClient() ? formatTextForMobile(text) : text;
     el.className = `show ${type}`;
 
     if (alertTimer) clearTimeout(alertTimer);
@@ -9700,7 +9860,7 @@
         const fg1 = document.getElementById('fuel-gauge-box');
         if (fg1) fg1.style.display = 'none';
         updateSmartActionButton();
-        document.getElementById('mission-hint').innerHTML = `👉 <b>Задание:</b> Машина заправлена! Выньте пистолет и переключитесь в кассу <span class="key-badge">TAB</span>.`;
+        setMissionHint(`👉 <b>Задание:</b> Машина заправлена! Выньте пистолет и переключитесь в кассу <span class="key-badge">TAB</span>.`);
       }
     } else {
       GameState.fuelPressure = Math.max(0, GameState.fuelPressure - dt * 65.0);
@@ -9754,7 +9914,7 @@
           GameState.hasLearnedFueling = true;
         }
         GameState.activeCar2.state = 'WAITING_CASHIER';
-        document.getElementById('mission-hint').innerHTML = `👉 <b>Задание:</b> Машина заправлена! Переключитесь в кассу <span class="key-badge">TAB</span> для расчета.`;
+        setMissionHint(`👉 <b>Задание:</b> Машина заправлена! Переключитесь в кассу <span class="key-badge">TAB</span> для расчета.`);
       }
     } else {
       GameState.fuelPressure2 = Math.max(0, GameState.fuelPressure2 - dt * 65.0);
@@ -9808,7 +9968,7 @@
           GameState.hasLearnedFueling = true;
         }
         GameState.activeCar3.state = 'WAITING_CASHIER';
-        document.getElementById('mission-hint').innerHTML = `👉 <b>Задание:</b> Машина заправлена! Переключитесь в кассу <span class="key-badge">TAB</span> для расчета.`;
+        setMissionHint(`👉 <b>Задание:</b> Машина заправлена! Переключитесь в кассу <span class="key-badge">TAB</span> для расчета.`);
       }
     } else {
       GameState.fuelPressure3 = Math.max(0, (GameState.fuelPressure3 || 0) - dt * 65.0);
@@ -9834,8 +9994,11 @@
     // Таймер Часа Пик (G21)
     if (GameState.rushHourTimer > 0) {
       GameState.rushHourTimer -= dt;
+      const rushVal = Math.max(1, Math.ceil(GameState.rushHourTimer));
       const rTimerEl = document.getElementById('rush-hour-timer');
-      if (rTimerEl) rTimerEl.innerText = Math.max(1, Math.ceil(GameState.rushHourTimer));
+      if (rTimerEl) rTimerEl.innerText = rushVal;
+      const rTimerMob = document.getElementById('rush-hour-timer-mobile');
+      if (rTimerMob) rTimerMob.innerText = rushVal;
       if (GameState.rushHourTimer <= 0) {
         GameState.rushHourTimer = 0;
         GameState.fuelPrice = 50;
